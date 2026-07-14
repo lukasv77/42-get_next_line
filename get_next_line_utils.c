@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 17:59:47 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/12 18:18:46 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/15 00:30:28 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,32 @@ char	*ft_strchr(const char *s, int c)
 	return (0);
 }
 
-char	*lststr(t_list **lst)
+char	*lststr(t_list *lst)
 {
-	return (0);
+	size_t	line_len;
+	char	*ptr;
+	t_list	*node;
+	size_t	i;
+	size_t	j;
+
+	line_len = 0;
+	node = lst;
+	while (node)
+	{
+		line_len += ft_chunklen(lst);
+		node = node->next;
+	}
+	ptr = malloc(line_len + 1);
+	if(!ptr)
+		return (NULL);
+	i = 0;
+	node = lst;
+	while (node)
+	{
+		j = 0;
+		while (lst->content[j])
+			ptr[i++] = lst->content[j++];
+		node = node->next;
+	}
+	return (ptr);
 }
