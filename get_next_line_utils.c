@@ -6,9 +6,12 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 17:59:47 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/15 00:30:28 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/15 20:30:27 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "get_next_line.h"
+#include <stdlib.h>
 
 size_t	ft_chunklen(const char *s)
 {
@@ -17,6 +20,8 @@ size_t	ft_chunklen(const char *s)
 	i = 0;
 	while (s[i] && s[i] != '\n')
 		i++;
+	if (s[i] == '\n')
+		i++; 
 	return (i);
 }
 
@@ -62,7 +67,7 @@ char	*ft_chunkdup(const char *s)
 	ptr = malloc((len + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);
-	while (s[i] && s[i] != '\n')
+	while (len--)
 	{
 		ptr[i] = s[i];
 		i++;
@@ -91,7 +96,7 @@ char	*ft_strchr(const char *s, int c)
 	return (0);
 }
 
-char	*lststr(t_list *lst)
+char	*ft_lststr(t_list *lst)
 {
 	size_t	line_len;
 	char	*ptr;
@@ -99,11 +104,13 @@ char	*lststr(t_list *lst)
 	size_t	i;
 	size_t	j;
 
+	if (!lst)
+		return (NULL);
 	line_len = 0;
 	node = lst;
 	while (node)
 	{
-		line_len += ft_chunklen(lst);
+		line_len += ft_chunklen(node->content);
 		node = node->next;
 	}
 	ptr = malloc(line_len + 1);
@@ -114,9 +121,13 @@ char	*lststr(t_list *lst)
 	while (node)
 	{
 		j = 0;
-		while (lst->content[j])
-			ptr[i++] = lst->content[j++];
+		while (((char *)(node->content))[j])
+			ptr[i++] = ((char *)(node->content))[j++];
 		node = node->next;
+		free(lst->content);
+		free(lst);
+		lst = node;
 	}
+	ptr[i] = 0;
 	return (ptr);
 }
