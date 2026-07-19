@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 17:00:46 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/15 20:32:14 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/19 17:22:19 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 
 char *get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE];
-	char		*ptr;
-	size_t		bytes_read;
+	static char	buffer[BUFFER_SIZE + 1];
+	static char	*ptr;
+	int		bytes_read;
 	t_list		*lst;
 
 	bytes_read = 1;
@@ -33,14 +33,20 @@ char *get_next_line(int fd)
 	if (ptr)
 	{
 		*ptr = ' ';
-		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(++ptr))); //strdup zmodyfikowane - czyta do \0 lub \n
+		ptr++;
+		if (!(*ptr))
+			return (NULL);
+//		return (++ptr, NULL); //strdup zmodyfikowane - czyta do \0 lub \n
+		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(ptr))); //strdup zmodyfikowane - czyta do \0 lub \n
 	}
 	while (!strchr(buffer, '\n') && bytes_read)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == 0)
+		bytes_read = read(fd, buffer, (BUFFER_SIZE));
+		if (bytes_read < 0)
+			return (NULL);
+		else if (bytes_read == 0)
 			return (ft_lststr(lst));
-		buffer[bytes_read] = '\0';
+//		buffer[bytes_read] = '\0';
 		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(buffer)));
 	}
 	return (ft_lststr(lst));
