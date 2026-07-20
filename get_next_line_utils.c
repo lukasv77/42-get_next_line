@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 17:59:47 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/19 16:37:00 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/19 17:24:05 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,6 @@ char	*ft_chunkdup(const char *s)
 	size_t	len;
 	char	*ptr;
 
-	if (*s == 0)
-		return (NULL);
 	i = 0;
 	len = ft_chunklen(s);
 	ptr = malloc((len + 1) * sizeof(char));

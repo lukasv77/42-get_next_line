@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 17:00:46 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/19 17:22:19 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/20 14:28:24 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,37 @@ char *get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
 	static char	*ptr;
-	int		bytes_read;
+	int			bytes_read;
 	t_list		*lst;
 
-	bytes_read = 1;
+	bytes_read = 0;
 	lst = NULL;
-	ptr = strchr(buffer, '\n');
-	if (ptr)
+	if (!ptr || *ptr == 0)
+		ptr = buffer;
+	if (ptr != buffer)
 	{
-		*ptr = ' ';
-		ptr++;
-		if (!(*ptr))
-			return (NULL);
-//		return (++ptr, NULL); //strdup zmodyfikowane - czyta do \0 lub \n
-		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(ptr))); //strdup zmodyfikowane - czyta do \0 lub \n
+		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(ptr)));
+		if (strchr(ptr, '\n'))
+			ptr = strchr(ptr, '\n') + 1;
+		else
+			ptr = buffer;
 	}
-	while (!strchr(buffer, '\n') && bytes_read)
+	while (ptr == buffer)
 	{
-		bytes_read = read(fd, buffer, (BUFFER_SIZE));
+		if (*ptr == 0 || ptr == buffer)
+		{
+			bytes_read = read(fd, buffer, BUFFER_SIZE);
+			buffer[bytes_read] = 0;
+		}
 		if (bytes_read < 0)
 			return (NULL);
-		else if (bytes_read == 0)
+		if (!bytes_read)
 			return (ft_lststr(lst));
-//		buffer[bytes_read] = '\0';
-		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(buffer)));
+//		if (!(*buffer))
+//			return (NULL);
+		ft_lstadd_back(&lst, ft_lstnew(ft_chunkdup(ptr)));
+		if (strchr(ptr, '\n'))
+			ptr = strchr(ptr, '\n') + 1;
 	}
 	return (ft_lststr(lst));
 }
