@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 16:59:58 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/15 11:46:11 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/21 10:43:20 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_list
 
 char	*get_next_line(int fd);
 size_t	ft_chunklen(const char *);
-void	ft_lstadd_back(t_list **, t_list * new);
+t_list	*ft_lstnew_back(t_list **, char *content);
 t_list	*ft_lstlast(t_list *);
 t_list	*ft_lstnew(void *);
 char	*ft_chunkdup(const char *);

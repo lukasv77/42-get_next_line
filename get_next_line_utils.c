@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 17:59:47 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/19 17:24:05 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/21 11:04:58 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,28 @@ size_t	ft_chunklen(const char *s)
 	return (i);
 }
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+t_list	*ft_lstnew_back(t_list **lst, char *content)
 {
+	t_list	*tmp;
+	t_list	*new;
+
+	new = malloc(sizeof(t_list));
+	if (!new)
+		return (NULL);
+	new->content = content;
+	new->next = NULL;
+	tmp = *lst;
 	if (!lst || !new)
-		return ;
+		return (NULL);
 	if (!*lst)
 		*lst = new;
 	else
-		ft_lstlast(*lst)->next = new;
-}
-
-t_list	*ft_lstlast(t_list *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*ptr;
-
-	ptr = malloc(sizeof(t_list));
-	if (!ptr)
-		return (NULL);
-	ptr->content = content;
-	ptr->next = NULL;
-	return (ptr);
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	return (*lst);
 }
 
 char	*ft_chunkdup(const char *s)
@@ -114,7 +107,7 @@ char	*ft_lststr(t_list *lst)
 		node = node->next;
 	}
 	ptr = malloc(line_len + 1);
-	if(!ptr)
+	if (!ptr)
 		return (NULL);
 	i = 0;
 	node = lst;
