@@ -6,24 +6,12 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 17:59:47 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/21 11:04:58 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/22 21:17:55 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
-
-size_t	ft_chunklen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] && s[i] != '\n')
-		i++;
-	if (s[i] == '\n')
-		i++; 
-	return (i);
-}
 
 t_list	*ft_lstnew_back(t_list **lst, char *content)
 {
@@ -56,7 +44,12 @@ char	*ft_chunkdup(const char *s)
 	char	*ptr;
 
 	i = 0;
-	len = ft_chunklen(s);
+	while (s[i] && s[i] != '\n')
+		i++;
+	if (s[i] == '\n')
+		i++;
+	len = i;
+	i = 0;
 	ptr = malloc((len + 1) * sizeof(char));
 	if (!ptr)
 		return (NULL);
@@ -79,7 +72,11 @@ char	*ft_strchr(const char *s, int c)
 	ch = (char) c;
 	i = 0;
 	if (ch == 0)
-		return (&p[ft_chunklen(p)]);
+	{
+		while (p[i++])
+			;
+		return (&p[i]);
+	}
 	while (p[i])
 	{
 		if (p[i] == ch)
@@ -89,26 +86,12 @@ char	*ft_strchr(const char *s, int c)
 	return (0);
 }
 
-char	*ft_lststr(t_list *lst)
+void	ft_mvcontent(t_list *lst, char *ptr)
 {
-	size_t	line_len;
-	char	*ptr;
-	t_list	*node;
 	size_t	i;
 	size_t	j;
+	t_list	*node;
 
-	if (!lst)
-		return (NULL);
-	line_len = 0;
-	node = lst;
-	while (node)
-	{
-		line_len += ft_chunklen(node->content);
-		node = node->next;
-	}
-	ptr = malloc(line_len + 1);
-	if (!ptr)
-		return (NULL);
 	i = 0;
 	node = lst;
 	while (node)
@@ -122,5 +105,30 @@ char	*ft_lststr(t_list *lst)
 		lst = node;
 	}
 	ptr[i] = 0;
+}
+
+char	*ft_lststr(t_list *lst)
+{
+	size_t	line_len;
+	char	*ptr;
+	t_list	*node;
+	size_t	i;
+
+	if (!lst)
+		return (NULL);
+	line_len = 0;
+	node = lst;
+	while (node)
+	{
+		i = 0;
+		while (((char *)node->content)[i++])
+			;
+		line_len += i;
+		node = node->next;
+	}
+	ptr = malloc(line_len + 1);
+	if (!ptr)
+		return (NULL);
+	ft_mvcontent(lst, ptr);
 	return (ptr);
 }

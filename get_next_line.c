@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 17:00:46 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/21 10:43:07 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/22 22:02:35 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <unistd.h>
 
 #ifndef BUFFER_SIZE
-#	define BUFFER_SIZE 42
+# define BUFFER_SIZE 42
 #endif
 
 char	*get_next_line(int fd)
@@ -42,10 +42,10 @@ char	*get_next_line(int fd)
 	while (ptr == buffer)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		buffer[bytes_read] = 0;
 		if (bytes_read < 0)
 			return (NULL);
-		else if (!bytes_read)
+		buffer[bytes_read] = 0;
+		if (!bytes_read)
 			return (ft_lststr(lst));
 		ft_lstnew_back(&lst, ft_chunkdup(ptr));
 		if (ft_strchr(ptr, '\n'))
