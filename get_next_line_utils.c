@@ -6,7 +6,7 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 17:59:47 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/22 21:17:55 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/24 21:02:22 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ t_list	*ft_lstnew_back(t_list **lst, char *content)
 	t_list	*tmp;
 	t_list	*new;
 
+	if (!lst || !content)
+		return (NULL);
 	new = malloc(sizeof(t_list));
 	if (!new)
-		return (NULL);
+		return (ft_lstclear(lst), free(content), NULL);
 	new->content = content;
 	new->next = NULL;
 	tmp = *lst;
-	if (!lst || !new)
-		return (NULL);
 	if (!*lst)
 		*lst = new;
 	else
@@ -71,12 +71,6 @@ char	*ft_strchr(const char *s, int c)
 	p = (char *)s;
 	ch = (char) c;
 	i = 0;
-	if (ch == 0)
-	{
-		while (p[i++])
-			;
-		return (&p[i]);
-	}
 	while (p[i])
 	{
 		if (p[i] == ch)
@@ -115,20 +109,20 @@ char	*ft_lststr(t_list *lst)
 	size_t	i;
 
 	if (!lst)
-		return (NULL);
+		return (ft_lstclear(&lst), NULL);
 	line_len = 0;
 	node = lst;
 	while (node)
 	{
 		i = 0;
-		while (((char *)node->content)[i++])
+		while (((char *)node->content)[++i])
 			;
 		line_len += i;
 		node = node->next;
 	}
 	ptr = malloc(line_len + 1);
 	if (!ptr)
-		return (NULL);
+		return (ft_lstclear(&lst), NULL);
 	ft_mvcontent(lst, ptr);
 	return (ptr);
 }
