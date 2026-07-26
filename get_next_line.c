@@ -6,12 +6,11 @@
 /*   By: llinda <llinda@student.42warsaw.pl>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 17:00:46 by llinda            #+#    #+#             */
-/*   Updated: 2026/07/24 21:09:52 by llinda           ###   ########.fr       */
+/*   Updated: 2026/07/26 15:04:46 by llinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
 
